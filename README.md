@@ -1,98 +1,238 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# NestJS API Documentation
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Client Repo
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+[Client Repo](https://github.com/iamshubhamgupta/payment-dashboard-client)
 
-## Description
+## Table of Contents
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+1. [Auth Module](#auth-module)
+   - [Auth Controller](#auth-controller)
+   - [Auth Service](#auth-service)
+2. [Payments Module](#payments-module)
+   - [Payments Controller](#payments-controller)
+   - [Payments Service](#payments-service)
+3. [Entities](#entities)
+4. [Environment Variables](#environment-variables)
 
-## Project setup
+---
 
-```bash
-$ npm install
+## Auth Module
+
+### Overview
+
+Handles user authentication and authorization using JWT.
+
+### Auth Controller
+
+`POST /auth/login`  
+**Request Body (LoginDto):**
+
+```typescript
+{
+  email: string;
+  password: string;
+}
 ```
 
-## Compile and run the project
+**Response:**
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```typescript
+{
+  id: number;
+  username: string;
+  email: string;
+  token: string; // JWT token
+}
 ```
 
-## Run tests
+`POST /auth/register`  
+**Request Body (RegisterDto):**
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```typescript
+{
+  username: string;
+  email: string;
+  password: string;
+}
 ```
 
-## Deployment
+**Response:** Same as login
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+`GET /auth/me`  
+**Headers:**
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```
+Authorization: Bearer <token>
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+**Response:**
 
-## Resources
+```typescript
+{
+  id: number;
+  username: string;
+  email: string;
+}
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+### Auth Service
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+**Methods:**
 
-## Support
+- `login(data: LoginDto)` - Authenticates user
+- `register(data: RegisterDto)` - Creates new user
+- `getUser(id: number)` - Gets user profile
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+**Dependencies:**
 
-## Stay in touch
+- `@nestjs/jwt` for token generation
+- `bcrypt` for password hashing
+- TypeORM `User` repository
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+---
 
-## License
+## Payments Module
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Overview
+
+Manages payment transactions and statistics.
+
+### Payments Controller
+
+`GET /payments`  
+**Query Params:**
+
+- `status?`: 'pending' | 'success' | 'failed'
+- `method?`: 'card' | 'upi' | 'bank_transfer'
+
+**Response:**
+
+```typescript
+Payment[] // Array of payment entities
+```
+
+`POST /payments`  
+**Request Body (CreatePaymentDto):**
+
+```typescript
+{
+  amount: number;
+  receiver: string;
+  method: 'card' | 'upi' | 'bank_transfer';
+}
+```
+
+**Response:** Created payment entity
+
+`GET /payments/stats`  
+**Response:**
+
+```typescript
+{
+  counts: {
+    total: number;
+    success: number;
+    failed: number;
+    pending: number;
+  }
+  amounts: {
+    totalRevenue: number;
+    averageAmount: number;
+    minAmount: number;
+    maxAmount: number;
+  }
+  methods: {
+    card: number;
+    upi: number;
+    bank_transfer: number;
+  }
+  successRate: number;
+}
+```
+
+`GET /payments/:id`  
+**Response:** Single payment entity
+
+### Payments Service
+
+**Methods:**
+
+- `getPayments()` - Retrieves filtered payments
+- `createPayment()` - Simulates new payment
+- `getPaymentStats()` - Calculates payment metrics
+- `getPayment()` - Gets single payment
+
+**Dependencies:**
+
+- TypeORM `Payment` and `User` repositories
+
+---
+
+## Entities
+
+### User Entity
+
+```typescript
+{
+  id: number;
+  username: string;
+  email: string;
+  password: string; // Hashed
+  payments: Payment[]; // One-to-many relation
+}
+```
+
+### Payment Entity
+
+```typescript
+{
+  id: number;
+  amount: number;
+  receiver: string;
+  method: 'card' | 'upi' | 'bank_transfer';
+  status: 'pending' | 'success' | 'failed';
+  createdAt: Date;
+  user: User; // Many-to-one relation
+}
+```
+
+---
+
+## Environment Variables
+
+Create `.env` file in root directory:
+
+```env
+PORT=8080(or anything)
+JWT_SECRET=your_secure_secret
+DATABASE_URL=postgres://user:password@localhost:5432/db_name
+```
+
+---
+
+## Setup Instructions
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Start server:
+
+```bash
+npm run start:dev
+```
+
+---
+
+## Architecture Notes
+
+- **Authentication**: JWT with 1-day expiration
+- **Security**: Password hashing with bcrypt
+- **Validation**: Automatic via DTOs
+- **Database**: PostgreSQL (configured via TypeORM)
+- **Error Handling**: Custom BadRequestExceptions
+
+This documentation covers all the key aspects of your NestJS implementation. Would you like me to add any specific details or generate a Postman collection for the API endpoints?
