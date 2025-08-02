@@ -2,7 +2,7 @@
 
 ## Client Repo
 
-[Client Repo](https://github.com/iamshubhamgupta/payment-dashboard-client)
+[Client Repo](https://github.com/Abhiram86/payment_dashboard_client)
 
 ## Table of Contents
 
